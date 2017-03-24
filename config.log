@@ -2376,7 +2376,7 @@ configure:13735: $? = 0
 configure:13735: result: yes
 configure:13748: checking for strlcpy
 configure:13748: gcc -o conftest -g -O2   conftest.c  >&5
-/tmp/ccVGp5N6.o: In function `main':
+/tmp/ccNMxMT3.o: In function `main':
 /home/mengqinggang/file/file-5.09/conftest.c:114: undefined reference to `strlcpy'
 collect2: ld returned 1 exit status
 configure:13748: $? = 1
@@ -2501,7 +2501,7 @@ configure: failed program was:
 configure:13748: result: no
 configure:13761: checking for strlcat
 configure:13761: gcc -o conftest -g -O2   conftest.c  >&5
-/tmp/ccnv7he9.o: In function `main':
+/tmp/ccw9ErP9.o: In function `main':
 /home/mengqinggang/file/file-5.09/conftest.c:114: undefined reference to `strlcat'
 collect2: ld returned 1 exit status
 configure:13761: $? = 1
@@ -2754,6 +2754,7 @@ config.status:1166: creating tests/Makefile
 config.status:1166: creating doc/Makefile
 config.status:1166: creating python/Makefile
 config.status:1166: creating config.h
+config.status:1347: config.h is unchanged
 config.status:1395: executing depfiles commands
 config.status:1395: executing libtool commands
 

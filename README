@@ -1,3 +1,9 @@
+1.0
+    修改file.c文件process函数，使其只输出vas需要的文件类型扩展名
+    添加types.conf配置文件，将vas需要的文件类型添加进去
+    添加magic文件，匹配相应文件类型，输出扩展名
+    file命令使用：./file -b -m ./magic "testfiles"
+
 ** README for file(1) Command **
 @(#) $File: README,v 1.44 2011/03/24 13:03:39 rrt Exp $
 

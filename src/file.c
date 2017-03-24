@@ -419,12 +419,46 @@ unwrap(struct magic_set *ms, const char *fn)
 	return e;
 }
 
+/**
+ * 判断是否是vas需要的文件类型
+ */
+int type_vas_need(char* type) {
+    
+/*
+    char* vas[] = {"exe", "x64.exe", "dll", "x64.dll", "sys", "x64.sys"};
+    int i;
+    for (i = 0; i < 6; i++) {
+        if (!strcmp(type, vas[i]))
+            return 1;
+    }
+    
+*/
+    char temp[15];
+
+    FILE *f;
+    if ((f = fopen("types.conf", "r")) == NULL) {
+        printf("Cann't open file!");
+        return 0;
+    }
+
+    while (!feof(f)) {
+        fgets(temp, 15, f);
+        temp[strlen(temp) - 1] = '\0';
+        if (!strcmp(type, temp))
+            return 1;
+    }
+
+    fclose(f);
+
+    return 0;
+}
+
 /*
  * Called for each input file on the command line (or in a list of files)
  */
 private int
 process(struct magic_set *ms, const char *inname, int wid)
-{
+{   
 	const char *type;
 	int std_in = strcmp(inname, "-") == 0;
 
@@ -439,14 +473,19 @@ process(struct magic_set *ms, const char *inname, int wid)
 
 	/* 获取文件类型 */
 	type = magic_file(ms, std_in ? NULL : inname);
-	
+
 	if (type == NULL) {
-		(void)printf("ERROR: %s\n", magic_error(ms));
+	    (void)printf("ERROR: %s\n", magic_error(ms));
 		return 1;
-	} else {
+	} else 
+    /* 需要的文件类型输出扩展名那个，不需要的输出vasunknown */
+    if (type_vas_need(type)) {
 		(void)printf("%s\n", type);
 		return 0;
-	}
+	} else {
+        (void)printf("vasunknown\n");
+        return 0;
+    }
 }
 
 size_t
