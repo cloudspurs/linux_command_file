@@ -48,3 +48,4 @@ OPT('s', "special-files", 0, "        treat special (block/char devices) files a
     "                             ordinary ones\n")
 OPT('C', "compile", 0, "              compile file specified by -m\n")
 OPT('d', "debug", 0, "                print debugging messages\n")
+OPT('t', "types", 0, "                needed types\n")

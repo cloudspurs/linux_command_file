@@ -72,15 +72,16 @@ int getopt_long(int argc, char * const *argv, const char *optstring, const struc
 
 /* 如果系统支持符号链接 */
 #ifdef S_IFLNK
-#define FILE_FLAGS "-bchikLlNnprsvz0"
+#define FILE_FLAGS "-bchikLlNnprsvzt0"
 #else
-#define FILE_FLAGS "-bciklNnprsvz0"
+#define FILE_FLAGS "-bciklNnprsvzt0"
 #endif
 
 #define USAGE  \
     "Usage: %s [" FILE_FLAGS \
 	"] [--apple] [--mime-encoding] [--mime-type]\n" \
     "            [-e testname] [-F separator] [-f namefile] [-m magicfiles] " \
+    "            [-t typesfile] "\
     "file ...\n" \
     "       %s -C [-m magicfiles]\n" \
     "       %s [--help]\n"
@@ -105,7 +106,7 @@ private const struct option long_options[] = {
     {0, 0, NULL, 0}
 };
 
-#define OPTSTRING	"bcCde:f:F:hiklLm:nNprsvz0"
+#define OPTSTRING	"bcCde:f:F:hiklLm:nNprsvzt:0"
 
 /* 支持的测试选项 */
 private const struct {
@@ -123,6 +124,8 @@ private const struct {
 	{ "text",	MAGIC_NO_CHECK_TEXT },	/* synonym for ascii */
 	{ "tokens",	MAGIC_NO_CHECK_TOKENS },
 };
+
+private char* types_file;
 
 private char *progname;		/* used throughout */
 
@@ -188,6 +191,9 @@ main(int argc, char *argv[])
 		case '0':
 			nulsep = 1;
 			break;
+        case 't':
+            types_file = optarg;
+            break;
 		case 'b':
 			bflag++;
 			break;
@@ -436,9 +442,17 @@ int type_vas_need(char* type) {
     char temp[15];
 
     FILE *f;
-    if ((f = fopen("types.conf", "r")) == NULL) {
-        printf("Cann't open file!");
-        return 0;
+
+    if (types_file == NULL) {
+        if ((f = fopen("types.conf", "r")) == NULL) {
+            printf("Cann't open file! Types file error!");
+            return 0;
+        }           
+    } else {
+         if ((f = fopen(types_file, "r")) == NULL) {
+            printf("Cann't open file! Types file error!");
+            return 0;
+        } 
     }
 
     while (!feof(f)) {

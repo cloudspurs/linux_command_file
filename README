@@ -1,4 +1,19 @@
-1.0
+** README for file(vas) Command **
+
+1. file: 修改后的file指令
+    修改file.c文件，如果输出的文件扩展名在types.conf文件中,则输出相应的扩展名；否则输出vasunknown。
+
+2. types.conf: 需要检测的文件扩展名
+
+3. magic: 需要检测的文件扩展名对应的magic规则文件
+
+file -b -m magic filename
+
+-b: 不输出文件名，只输出文件扩展名
+-m: 指定magic文件
+filename: 被检测的文件
+
+Version 1.0
     修改file.c文件process函数，使其只输出vas需要的文件类型扩展名
     添加types.conf配置文件，将vas需要的文件类型添加进去
     添加magic文件，匹配相应文件类型，输出扩展名
