@@ -80,7 +80,7 @@ int getopt_long(int argc, char * const *argv, const char *optstring, const struc
 #define USAGE  \
     "Usage: %s [" FILE_FLAGS \
 	"] [--apple] [--mime-encoding] [--mime-type]\n" \
-    "            [-e testname] [-F separator] [-f namefile] [-m magicfiles] " \
+    "            [-e testname] [-F separator] [-f namefile] [-m magicfiles]\n" \
     "            [-t typesfile] "\
     "file ...\n" \
     "       %s -C [-m magicfiles]\n" \
