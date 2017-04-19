@@ -6,7 +6,7 @@ Version 1.1
     修改file.c文件，如果输出的文件扩展名在types.conf文件中,则输出相应的扩展名；否则输出vasunknown。
 
 2. types.conf: 需要检测的文件扩展名
-    Version 1.0 types.conf采用相对路径，当使用绝对路径调用file时，会找不到types.conf文件。
+    Version 1.0 types.conf采用相对路径，当使用绝对路径调用file时，会找不到types.conf文件。每个扩展名长度应小于15字符。
 
 3. magic: 需要检测的文件扩展名对应的magic规则文件
 

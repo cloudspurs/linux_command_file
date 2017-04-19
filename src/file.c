@@ -93,8 +93,8 @@ private int 		/* Global command-line options 		*/
 	nulsep = 0;	/* Append '\0' to the separator		*/
 
 private const char *separator = ":";	/* Default field separator	*/
-/* 长参数返回短参数，只有长参数返回0 */
 
+/* 长参数返回短参数，只有长参数返回0 */
 private const struct option long_options[] = {
 #define OPT(shortname, longname, opt, doc)      \
     {longname, opt, NULL, shortname},
@@ -125,6 +125,7 @@ private const struct {
 	{ "tokens",	MAGIC_NO_CHECK_TOKENS },
 };
 
+/* specify types file that vas needed */
 private char* types_file;
 
 private char *progname;		/* used throughout */
@@ -338,6 +339,7 @@ main(int argc, char *argv[])
 	}
 	else {
 		size_t j, wid, nw;
+        /* get max file name length for tab, make the print info align */
 		for (wid = 0, j = (size_t)optind; j < (size_t)argc; j++) {
 			nw = file_mbswidth(argv[j]);
 			if (nw > wid)
@@ -457,6 +459,7 @@ int type_vas_need(char* type) {
 
     while (!feof(f)) {
         fgets(temp, 15, f);
+        /* change the '\n' at the end of each line to '\0' */
         temp[strlen(temp) - 1] = '\0';
         if (!strcmp(type, temp))
             return 1;
@@ -502,6 +505,9 @@ process(struct magic_set *ms, const char *inname, int wid)
     }
 }
 
+/**
+ * get file name length
+ */
 size_t
 file_mbswidth(const char *s)
 {
