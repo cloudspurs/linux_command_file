@@ -1,0 +1,2 @@
+How to compile magic file: 
+    You can man magic for a description for how to create your own magic file. Then use file -C -m <your magic file> to compile it, and file -m <your magic file> to use it.
