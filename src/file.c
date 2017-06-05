@@ -37,6 +37,8 @@ FILE_RCSID("@(#)$File: file.c,v 1.144 2011/05/10 17:08:14 christos Exp $")
 
 #include "magic.h"
 
+#include <stdio.h>
+#include <malloc.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -200,8 +202,7 @@ main(int argc, char *argv[])
 			break;
 		case 'c':
 			action = FILE_CHECK;
-			break;
-		case 'C':
+			break; case 'C':
 			action = FILE_COMPILE;
 			break;
 		case 'd':
@@ -432,15 +433,6 @@ unwrap(struct magic_set *ms, const char *fn)
  */
 int type_vas_need(char* type) {
     
-/*
-    char* vas[] = {"exe", "x64.exe", "dll", "x64.dll", "sys", "x64.sys"};
-    int i;
-    for (i = 0; i < 6; i++) {
-        if (!strcmp(type, vas[i]))
-            return 1;
-    }
-    
-*/
     char temp[15];
 
     FILE *f;
@@ -470,6 +462,36 @@ int type_vas_need(char* type) {
     return 0;
 }
 
+/**
+ * vasunknown: HTML document, ISO-8859 text, with very long lines
+ *
+ * vasscript: ASCII text, with CRLF line terminators
+ *      There's "text" before the first comma.   
+ * @Para inname filename
+ */
+int vas_script_type(char* inname) {
+
+    FILE *fp;
+    char buffer[255];
+
+    /* call the file command of the system(file filename) */
+    char command[255] = "file -b ";
+//    char command = (char*)malloc
+  
+    strcat(command, inname);
+
+    fp = popen(command, "r");
+
+    fgets(buffer, sizeof(buffer), fp);
+
+    char* type = strtok(buffer, ",");
+
+    if(strstr(type, "text"))
+        return 1;
+    else
+        return 0;
+}
+
 /*
  * Called for each input file on the command line (or in a list of files)
  */
@@ -488,21 +510,33 @@ process(struct magic_set *ms, const char *inname, int wid)
 		    (int) (nopad ? 0 : (wid - file_mbswidth(inname))), "");
 	}
 
-	/* 获取文件类型 */
+	/* get file type */
 	type = magic_file(ms, std_in ? NULL : inname);
 
-	if (type == NULL) {
+    if (type == NULL) {
 	    (void)printf("ERROR: %s\n", magic_error(ms));
 		return 1;
-	} else 
-    /* 需要的文件类型输出扩展名那个，不需要的输出vasunknown */
-    if (type_vas_need(type)) {
-		(void)printf("%s\n", type);
-		return 0;
-	} else {
-        (void)printf("vasunknown\n");
-        return 0;
+	} 
+        
+    /** 
+     * there be 2 judgement
+     * first: if exe, dll or sys, end
+     *      if not these type, type is vasunknown
+     * second: if type is vasunknown, and if the new type is vasscript
+     *      type is vasscript
+     */
+    if (!type_vas_need(type)) {
+        type = "vasunknown";
+    } 
+    
+    if(type == "vasunknown") {
+        if(vas_script_type(inname)) {
+            type = "vasscript";
+        }
     }
+
+    (void)printf("%s\n", type);
+    return 0;
 }
 
 /**
